@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-white mb-4">Your Connections</h2>
+    <div class="row">
+        {% for match in matches %}
+        <div class="col-md-6 mb-3">
+            <div class="card bg-dark border-secondary p-3 d-flex flex-row justify-content-between align-items-center">
+                <span class="text-white fs-5">👤 {{ match['username'] }}</span>
+                <a href="/chat/{{ match['id'] }}" class="btn btn-primary">Text Now</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center mt-5">
+            <p class="text-secondary fs-4">No matches yet. Keep swiping on the dashboard!</p>
+            <a href="/dashboard" class="btn btn-outline-primary">Start Swiping</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

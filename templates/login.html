@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-md mx-auto mt-16 bg-slate-900 p-10 rounded-[2.5rem] border border-slate-800 shadow-2xl">
+    <h2 class="text-3xl font-black mb-8 text-center">Welcome Back</h2>
+    <form method="POST" class="space-y-6">
+        <div>
+            <label class="block text-sm font-bold text-slate-400 mb-2 ml-1">USERNAME</label>
+            <input type="text" name="username" placeholder="Type your username..." 
+                   class="w-full bg-white text-slate-950 px-5 py-4 rounded-2xl border-2 border-slate-700 focus:border-purple-500 outline-none transition font-medium" required>
+        </div>
+        <div>
+            <label class="block text-sm font-bold text-slate-400 mb-2 ml-1">PASSWORD</label>
+            <input type="password" name="password" placeholder="••••••••" 
+                   class="w-full bg-white text-slate-950 px-5 py-4 rounded-2xl border-2 border-slate-700 focus:border-purple-500 outline-none transition font-medium" required>
+        </div>
+        <button class="w-full bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-2xl font-black text-lg hover:brightness-110 transition shadow-lg">
+            Login to SkillSwap
+        </button>
+    </form>
+</div>
+{% endblock %}

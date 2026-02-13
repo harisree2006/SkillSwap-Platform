@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body { background: #0f172a; color: white; }
+        .tinder-card { transition: transform 0.4s ease, opacity 0.4s ease; }
+        .swipe-left { transform: translateX(-500px) rotate(-20deg); opacity: 0; }
+        .swipe-right { transform: translateX(500px) rotate(20deg); opacity: 0; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="p-6 flex justify-between items-center border-b border-slate-800 bg-slate-900">
+        <a href="/" class="text-2xl font-black bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">SkillSwap</a>
+        <div class="flex gap-4">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg border border-red-500/30">Logout</a>
+            {% else %}
+                <a href="/login" class="px-4 py-2">Login</a>
+                <a href="/register" class="bg-purple-600 px-4 py-2 rounded-lg font-bold">Join</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container mx-auto p-6">{% block content %}{% endblock %}</div>
+
+    <nav class="navbar navbar-dark bg-dark px-4">
+    <a href="/" class="navbar-brand fw-bold">SkillSwap</a>
+    <div>
+        {% if session.get('user_id') %}
+            <a href="/dashboard" class="text-white me-3">Discover</a>
+            <a href="/matches" class="text-white me-3">My Matches</a>
+            <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+        {% else %}
+            <a href="/login" class="text-white me-3">Login</a>
+            <a href="/register" class="btn btn-primary btn-sm">Join</a>
+        {% endif %}
+    </div>
+</nav>
+</body>
+</html>

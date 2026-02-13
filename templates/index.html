@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="text-center py-20">
+    <h1 class="text-7xl font-black mb-6 tracking-tight">SkillSwap</h1>
+    <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        The ultimate peer-to-peer exchange. Stop paying for courses, start swapping expertise.
+    </p>
+    <div class="mt-10 flex justify-center gap-4">
+        <a href="/register" class="bg-white text-black px-8 py-4 rounded-2xl font-black text-lg hover:scale-105 transition-transform shadow-xl shadow-white/10">Get Started</a>
+        <a href="/login" class="bg-slate-800 text-white px-8 py-4 rounded-2xl font-black text-lg border border-slate-700 hover:bg-slate-700 transition">Login</a>
+    </div>
+</section>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+    <div class="bg-slate-900 p-8 rounded-[2rem] border border-slate-800 shadow-2xl">
+        <div class="text-4xl mb-4">🤝</div>
+        <h3 class="text-2xl font-bold mb-3">Skill Exchange</h3>
+        <p class="text-slate-400">Share your expertise in coding, music, or art and get taught something in return.</p>
+    </div>
+    <div class="bg-slate-900 p-8 rounded-[2rem] border border-slate-800 shadow-2xl">
+        <div class="text-4xl mb-4">🎯</div>
+        <h3 class="text-2xl font-bold mb-3">Smart Matching</h3>
+        <p class="text-slate-400">Our algorithm connects you only with people who have exactly what you want to learn.</p>
+    </div>
+    <div class="bg-slate-900 p-8 rounded-[2rem] border border-slate-800 shadow-2xl">
+        <div class="text-4xl mb-4">📊</div>
+        <h3 class="text-2xl font-bold mb-3">Community</h3>
+        <p class="text-slate-400">Join a global network of learners and mentors dedicated to free education.</p>
+    </div>
+</div>
+{% endblock %}

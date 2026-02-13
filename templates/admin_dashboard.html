@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-white">Admin Panel</h2>
+
+<div class="row text-white mb-4">
+    <div class="col-md-4">Total Users: {{ total_users }}</div>
+    <div class="col-md-4">Total Requests: {{ total_requests }}</div>
+    <div class="col-md-4">Total Matches: {{ total_matches }}</div>
+</div>
+
+<h4 class="mt-4 text-white">All Users</h4>
+<table class="table table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Role</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user['id'] }}</td>
+        <td>{{ user['username'] }}</td>
+        <td>{{ user['role'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h4 class="mt-4 text-white">All Skills in System</h4>
+<ul class="text-white">
+    {% for skill in skills %}
+        <li>{{ skill['skill'] }} (User ID: {{ skill['user_id'] }})</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

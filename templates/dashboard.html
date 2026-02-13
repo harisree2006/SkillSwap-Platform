@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+    <div class="lg:col-span-4 space-y-6">
+        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-700">
+            <h3 class="font-bold text-emerald-400 mb-4">I CAN TEACH</h3>
+            <form method="POST" class="flex gap-2">
+                <input name="give_skill" class="flex-1 bg-white text-slate-950 px-4 py-2 rounded-xl outline-none" placeholder="e.g. Python">
+                <button class="bg-emerald-600 px-4 py-2 rounded-xl font-bold">Add</button>
+            </form>
+        </div>
+        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-700">
+            <h3 class="font-bold text-blue-400 mb-4">I WANT TO LEARN</h3>
+            <form method="POST" class="flex gap-2">
+                <input name="want_skill" class="flex-1 bg-white text-slate-950 px-4 py-2 rounded-xl outline-none" placeholder="e.g. Guitar">
+                <button class="bg-blue-600 px-4 py-2 rounded-xl font-bold">Add</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="lg:col-span-8 flex justify-center items-center min-h-[500px]">
+        {% if card %}
+        <div id="swipeCard" class="w-80 bg-slate-800 rounded-[3rem] border border-slate-700 shadow-2xl overflow-hidden animate__animated animate__zoomIn">
+            <div class="h-56 bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center text-8xl">🤝</div>
+            <div class="p-8 text-center">
+                <h2 class="text-3xl font-black">{{ card['username'] }}</h2>
+                <p class="mt-2 text-emerald-400 font-bold">Teaches: {{ card['offering'] }}</p>
+                <div class="mt-8 flex justify-center gap-6">
+                    <button onclick="handleSwipe('left')" class="w-14 h-14 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all text-xl">✖</button>
+                    <button onclick="handleSwipe('right')" class="w-14 h-14 rounded-full border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all text-xl">❤</button>
+                </div>
+            </div>
+            <form id="swipeForm" method="POST" class="hidden">
+                <input type="hidden" name="match_user_id" value="{{ card['id'] }}">
+                <input type="hidden" name="direction" id="swipeDir">
+            </form>
+        </div>
+        {% else %}
+        <div class="text-center p-12 border-2 border-dashed border-slate-700 rounded-[3rem]">
+            <p class="text-5xl mb-4">🔎</p>
+            <p class="text-slate-400">Add some skills to find matches!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function handleSwipe(dir) {
+    const card = document.getElementById('swipeCard');
+    const input = document.getElementById('swipeDir');
+    card.classList.add(dir === 'left' ? 'swipe-left' : 'swipe-right');
+    input.value = dir;
+    setTimeout(() => document.getElementById('swipeForm').submit(), 400);
+}
+</script>
+{% endblock %}
