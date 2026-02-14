@@ -7,38 +7,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        body { background: #0f172a; color: white; }
-        .tinder-card { transition: transform 0.4s ease, opacity 0.4s ease; }
-        .swipe-left { transform: translateX(-500px) rotate(-20deg); opacity: 0; }
-        .swipe-right { transform: translateX(500px) rotate(20deg); opacity: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body { 
+            background: #0b0e14; 
+            color: white; 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* The Network Pattern (The "Under Portion") */
+        .network-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45vh; /* Covers the bottom portion */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238b5cf6' fill-opacity='0.12' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: -1;
+            mask-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
+            pointer-events: none;
+        }
+
+        /* Centering the Tinder Card */
+        .card-zone {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Glassmorphism Navbar */
+        nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
     </style>
 </head>
-<body class="min-h-screen">
-    <nav class="p-6 flex justify-between items-center border-b border-slate-800 bg-slate-900">
-        <a href="/" class="text-2xl font-black bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">SkillSwap</a>
-        <div class="flex gap-4">
+<body>
+    <nav class="p-5 flex justify-between items-center border-b border-white/10 sticky top-0">
+        <a href="/" class="text-2xl font-black bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+            SkillSwap
+        </a>
+        
+        <div class="flex items-center gap-6">
             {% if session.get('user_id') %}
-                <a href="/logout" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg border border-red-500/30">Logout</a>
+                <a href="/dashboard" class="text-white/70 hover:text-white transition">Discover</a>
+                <a href="/matches" class="text-white/70 hover:text-white transition">My Requests</a>
+                {% if session.get('role') == 'admin' %}
+                    <a href="/admin_dashboard" class="text-purple-400 font-bold border-b border-purple-400">Admin</a>
+                {% endif %}
+                <a href="/logout" class="bg-red-500/10 text-red-400 px-4 py-2 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition">Sign Out</a>
             {% else %}
-                <a href="/login" class="px-4 py-2">Login</a>
-                <a href="/register" class="bg-purple-600 px-4 py-2 rounded-lg font-bold">Join</a>
+                <a href="/login" class="text-white/70 hover:text-white">Login</a>
+                <a href="/register" class="bg-purple-600 hover:bg-purple-500 px-5 py-2 rounded-xl font-bold transition shadow-lg shadow-purple-500/20">Join</a>
             {% endif %}
         </div>
     </nav>
-    <div class="container mx-auto p-6">{% block content %}{% endblock %}</div>
 
-    <nav class="navbar navbar-dark bg-dark px-4">
-    <a href="/" class="navbar-brand fw-bold">SkillSwap</a>
-    <div>
-        {% if session.get('user_id') %}
-            <a href="/dashboard" class="text-white me-3">Discover</a>
-            <a href="/matches" class="text-white me-3">My Matches</a>
-            <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
-        {% else %}
-            <a href="/login" class="text-white me-3">Login</a>
-            <a href="/register" class="btn btn-primary btn-sm">Join</a>
-        {% endif %}
+    <div class="card-zone">
+        {% block content %}{% endblock %}
     </div>
-</nav>
+
+    <div class="network-bg"></div>
+
+    <div class="fixed bottom-4 left-4 opacity-20 text-[10px] tracking-[5px]">SKILLSWAP NETWORK ALPHA v1.0</div>
+
 </body>
 </html>

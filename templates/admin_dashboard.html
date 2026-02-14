@@ -1,35 +1,86 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="w-full max-w-7xl mx-auto p-6 space-y-8 animate__animated animate__fadeIn">
+    
+    <div class="flex justify-between items-end">
+        <div>
+            <h1 class="text-4xl font-black text-white mb-2">Admin Panel</h1>
+            <p class="text-slate-400">Manage your network, users, and skill swaps.</p>
+        </div>
+        <div class="flex gap-4">
+            <div class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-4 rounded-2xl min-w-[120px]">
+                <span class="block text-xs text-slate-500 uppercase font-bold">Total Users</span>
+                <span class="text-2xl font-black text-purple-400">{{ total_users }}</span>
+            </div>
+            <div class="bg-slate-800/40 backdrop-blur-md border border-white/5 p-4 rounded-2xl min-w-[120px]">
+                <span class="block text-xs text-slate-500 uppercase font-bold">Mutual Matches</span>
+                <span class="text-2xl font-black text-pink-400">{{ total_matches }}</span>
+            </div>
+        </div>
+    </div>
 
-<h2 class="text-white">Admin Panel</h2>
+    <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-2 rounded-2xl flex gap-2 overflow-x-auto">
+        <button class="px-6 py-2 rounded-xl bg-purple-600/20 text-purple-400 border border-purple-500/30 font-bold">Users</button>
+        <button class="px-6 py-2 rounded-xl text-slate-400 hover:bg-white/5 transition">Swaps</button>
+        <button class="px-6 py-2 rounded-xl text-slate-400 hover:bg-white/5 transition">Feedback</button>
+        <button class="px-6 py-2 rounded-xl text-slate-400 hover:bg-white/5 transition">Messages</button>
+        <button class="px-6 py-2 rounded-xl text-slate-400 hover:bg-white/5 transition relative">
+            Reports
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+    </div>
 
-<div class="row text-white mb-4">
-    <div class="col-md-4">Total Users: {{ total_users }}</div>
-    <div class="col-md-4">Total Requests: {{ total_requests }}</div>
-    <div class="col-md-4">Total Matches: {{ total_matches }}</div>
+    <div class="bg-slate-900/60 backdrop-blur-2xl border border-white/10 rounded-[32px] overflow-hidden shadow-2xl">
+        <div class="p-8 border-b border-white/5 flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-white">Manage Users</h2>
+            <div class="relative">
+                <input type="text" placeholder="Search users..." class="bg-black/40 border border-white/10 rounded-full px-5 py-2 text-sm focus:outline-none focus:border-purple-500">
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-800/50 text-slate-500 text-[10px] uppercase tracking-[2px] font-black">
+                        <th class="px-8 py-4">ID</th>
+                        <th class="px-8 py-4">Name</th>
+                        <th class="px-8 py-4">Skills Offered</th>
+                        <th class="px-8 py-4">Skills Wanted</th>
+                        <th class="px-8 py-4 text-center">Status</th>
+                        <th class="px-8 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    {% for user in users %}
+                    <tr class="group hover:bg-white/[0.02] transition">
+                        <td class="px-8 py-6 text-slate-500 font-mono text-xs">#{{ user['id'] }}</td>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-[10px] font-bold">
+                                    {{ user['username'][0].upper() }}
+                                </div>
+                                <span class="font-bold text-white">{{ user['username'] }}</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6 text-slate-300">
+                            <span class="bg-purple-500/10 text-purple-400 text-[10px] px-2 py-1 rounded-md border border-purple-500/20">Backend</span>
+                        </td>
+                        <td class="px-8 py-6 text-slate-300">
+                            <span class="bg-pink-500/10 text-pink-400 text-[10px] px-2 py-1 rounded-md border border-pink-500/20">Design</span>
+                        </td>
+                        <td class="px-8 py-6 text-center">
+                            <span class="bg-green-500/20 text-green-400 text-[10px] px-3 py-1 rounded-full font-bold">Active</span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <button class="bg-red-500/10 text-red-500 px-4 py-1.5 rounded-lg border border-red-500/30 text-xs font-bold hover:bg-red-500 hover:text-white transition">
+                                Ban
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<h4 class="mt-4 text-white">All Users</h4>
-<table class="table table-dark">
-    <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Role</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-        <td>{{ user['id'] }}</td>
-        <td>{{ user['username'] }}</td>
-        <td>{{ user['role'] }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<h4 class="mt-4 text-white">All Skills in System</h4>
-<ul class="text-white">
-    {% for skill in skills %}
-        <li>{{ skill['skill'] }} (User ID: {{ skill['user_id'] }})</li>
-    {% endfor %}
-</ul>
-
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="profile-container">
+
+    <div class="profile-header">
+        <img src="{{ url_for('static', filename='uploads/' + user.profile_photo) }}" 
+             class="profile-img">
+    </div>
+
+    <div class="profile-details">
+        <h2>{{ user.username }}, {{ user.age }}</h2>
+        <p class="bio">{{ user.bio }}</p>
+        <p class="looking">Looking for: {{ user.looking_for }}</p>
+
+        <a href="/edit_profile" class="edit-btn">Edit Profile</a>
+    </div>
+
+</div>
+
+{% endblock %}
