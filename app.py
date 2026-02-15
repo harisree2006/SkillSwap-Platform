@@ -136,6 +136,42 @@ def delete_user(user_id):
     flash(f"User #{user_id} deleted.")
     return redirect(url_for("admin_dashboard"))
 
+
+@app.route("/chat/<int:receiver_id>", methods=["GET", "POST"])
+def chat(receiver_id):
+    if "user_id" not in session: 
+        return redirect(url_for("login"))
+    
+    conn = get_db()
+    uid = session["user_id"]
+
+    # 1. Handle sending a message (POST)
+    if request.method == "POST":
+        msg = request.form.get("message")
+        if msg:
+            conn.execute("""
+                INSERT INTO messages (sender_id, receiver_id, message) 
+                VALUES (?, ?, ?)
+            """, (uid, receiver_id, msg))
+            conn.commit()
+            return redirect(url_for("chat", receiver_id=receiver_id))
+
+    # 2. Fetch all messages between these two users (GET)
+    messages = conn.execute("""
+        SELECT * FROM messages 
+        WHERE (sender_id=? AND receiver_id=?) OR (sender_id=? AND receiver_id=?) 
+        ORDER BY timestamp ASC
+    """, (uid, receiver_id, receiver_id, uid)).fetchall()
+    
+    # 3. Get the receiver's name for the chat header
+    receiver = conn.execute("SELECT username FROM users WHERE id=?", (receiver_id,)).fetchone()
+    conn.close()
+    
+    return render_template("chat.html", 
+                           messages=messages, 
+                           receiver=receiver, 
+                           receiver_id=receiver_id)
+
 # ---------------- MATCHES & LOGOUT ---------------- #
 
 @app.route("/matches")
